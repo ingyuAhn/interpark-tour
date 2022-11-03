@@ -1,10 +1,12 @@
 package com.assignment.interpark.domain.tour;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 public class Tour {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tourId;
 
     @ManyToOne
@@ -21,9 +24,21 @@ public class Tour {
     private City city;
 
     @Column(nullable = false)
-    private LocalDateTime startData;
+    private LocalDate startData;
 
     @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
+    @Builder
+    public Tour(City city, LocalDate startData, LocalDate endDate) {
+        this.city = city;
+        this.startData = startData;
+        this.endDate = endDate;
+    }
+
+    public void tourModify(City city, LocalDate startData, LocalDate endDate) {
+        this.city = city;
+        this.startData = startData;
+        this.endDate = endDate;
+    }
 }

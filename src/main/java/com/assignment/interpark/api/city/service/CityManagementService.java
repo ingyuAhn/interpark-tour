@@ -67,12 +67,8 @@ public class CityManagementService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResponseMessage cityModifyProcess(Long cityId, CityRequest cityRequest){
-        try {
-            City city = notFoundCityEntityCheck(cityId);
-            city.cityModify(cityRequest.getCityName(), cityRequest.getPopulation());
-        }catch (Exception e) {
-            return new ResponseMessage(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        City city = notFoundCityEntityCheck(cityId);
+        city.cityModify(cityRequest.getCityName(), cityRequest.getPopulation());
         return new ResponseMessage(HttpStatus.OK, "success");
     }
 
@@ -84,12 +80,8 @@ public class CityManagementService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResponseMessage cityDeleteProcess(Long cityId) {
-        try {
-            City city = notFoundCityEntityCheck(cityId);
-            cityRepository.delete(city);
-        }catch (Exception e) {
-            return new ResponseMessage(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        City city = notFoundCityEntityCheck(cityId);
+        cityRepository.delete(city);
         return new ResponseMessage(HttpStatus.OK, "success");
     }
 
