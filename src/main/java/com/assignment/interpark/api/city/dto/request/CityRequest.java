@@ -13,7 +13,6 @@ import javax.validation.constraints.*;
 public class CityRequest {
 
     @NotBlank(message = "이름이 입력되지 않았습니다.")
-    @Pattern(regexp = "[a-zA-Z가-힣]")
     private String cityName;
 
     @NotNull(message = "인구수가 입력되지 않았습니다.")

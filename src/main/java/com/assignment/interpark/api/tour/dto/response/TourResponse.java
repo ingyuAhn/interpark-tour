@@ -16,11 +16,14 @@ public class TourResponse {
 
     private LocalDate endDate;
 
-    private CityResponse cityResponse;
+    private String cityName;
 
-    public TourResponse(LocalDate startDate, LocalDate endDate, CityResponse cityResponse) {
-        this.startData = startDate;
+    private Long cityId;
+
+    public TourResponse(LocalDate startData, LocalDate endDate, String cityName, Long cityId) {
+        this.startData = startData;
         this.endDate = endDate;
-        this.cityResponse = cityResponse;
+        this.cityName = cityName;
+        this.cityId = cityId;
     }
 }

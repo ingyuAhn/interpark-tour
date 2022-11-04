@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TourResponseMapper {
 
-    @Mapping(source = "city.cityName", target = "cityResponse.cityName")
+    @Mapping(source = "city.cityName", target = "cityName")
+    @Mapping(source = "city.cityId", target = "cityId")
     TourResponse tourResponseDto(Tour tour);
 }

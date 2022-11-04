@@ -1,5 +1,6 @@
 package com.assignment.interpark.api.tour.service;
 
+import com.assignment.interpark.api.city.mapper.CityResponseMapper;
 import com.assignment.interpark.api.city.repository.CityRepository;
 import com.assignment.interpark.api.tour.dto.request.TourRequest;
 import com.assignment.interpark.api.tour.dto.response.TourResponse;
@@ -26,6 +27,7 @@ public class TourManagementService {
     private final TourRepository tourRepository;
     private final CityRepository cityRepository;
     private final TourResponseMapper tourResponseMapper;
+    private final CityResponseMapper cityResponseMapper;
 
     /**
      * Instantiates a new Tour management service.
@@ -36,10 +38,12 @@ public class TourManagementService {
      */
     public TourManagementService(TourRepository tourRepository,
                                  CityRepository cityRepository,
-                                 TourResponseMapper tourResponseMapper) {
+                                 TourResponseMapper tourResponseMapper,
+                                 CityResponseMapper cityResponseMapper) {
         this.tourRepository = tourRepository;
         this.cityRepository = cityRepository;
         this.tourResponseMapper = tourResponseMapper;
+        this.cityResponseMapper = cityResponseMapper;
     }
 
     /**

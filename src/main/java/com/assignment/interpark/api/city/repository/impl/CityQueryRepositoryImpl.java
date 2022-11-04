@@ -1,15 +1,18 @@
 package com.assignment.interpark.api.city.repository.impl;
 
 import com.assignment.interpark.api.city.repository.CityQueryRepository;
-import com.assignment.interpark.config.database.QuerydslConfig;
 import com.assignment.interpark.domain.tour.City;
-import static com.assignment.interpark.domain.tour.QCity.city;
-import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.NumberExpression;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.assignment.interpark.domain.tour.QCity.city;
+import static com.assignment.interpark.domain.tour.QTour.tour;
+
 
 public class CityQueryRepositoryImpl extends QuerydslRepositorySupport implements CityQueryRepository{
 
@@ -18,6 +21,6 @@ public class CityQueryRepositoryImpl extends QuerydslRepositorySupport implement
     }
     @Override
     public List<City> findCityQuery() {
-        return from(city).fetch();
+        return null;
     }
 }

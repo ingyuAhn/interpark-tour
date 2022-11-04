@@ -3,15 +3,23 @@ package com.assignment.interpark.api.city.service;
 import com.assignment.interpark.api.city.dto.request.CityRequest;
 import com.assignment.interpark.api.city.mapper.CityResponseMapper;
 import com.assignment.interpark.api.city.repository.CityRepository;
+import com.assignment.interpark.api.tour.repository.TourRepository;
 import com.assignment.interpark.common.message.ResponseDataMessage;
 import com.assignment.interpark.common.message.ResponseMessage;
 import com.assignment.interpark.domain.tour.City;
+import com.assignment.interpark.domain.tour.Tour;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type City management service.
@@ -21,6 +29,7 @@ public class CityManagementService {
 
     private final CityRepository cityRepository;
     private final CityResponseMapper cityResponseMapper;
+    private final TourRepository tourRepository;
 
     /**
      * Instantiates a new City management service.
@@ -29,9 +38,11 @@ public class CityManagementService {
      * @param cityResponseMapper the city response mapper
      */
     public CityManagementService(CityRepository cityRepository,
-                                 CityResponseMapper cityResponseMapper) {
+                                 CityResponseMapper cityResponseMapper,
+                                 TourRepository tourRepository) {
         this.cityRepository = cityRepository;
         this.cityResponseMapper = cityResponseMapper;
+        this.tourRepository = tourRepository;
     }
 
     /**
@@ -91,15 +102,32 @@ public class CityManagementService {
      * @param cityId the city id
      * @return the response data message
      */
-    @Transactional(readOnly = true)
+    @Transactional(rollbackFor = Exception.class)
     public ResponseDataMessage cityFindOneProcess(Long cityId) {
-        City city;
-        try {
-            city = notFoundCityEntityCheck(cityId);
-        }catch (Exception e) {
-            return new ResponseDataMessage(HttpStatus.BAD_REQUEST, e.getMessage(), "fail");
+        City city = notFoundCityEntityCheck(cityId);
+        city.lastClickDateModify();;
+        List<Tour> tourList = tourRepository.findByCity(city);
+        return new ResponseDataMessage(HttpStatus.OK, "success", cityResponseMapper.cityOrTourListResponseDto(city, tourList));
+    }
+
+    /**
+     * City find list process response data message.
+     *
+     * @return the response data message
+     */
+    @Transactional(readOnly = true)
+    public ResponseDataMessage cityFindListProcess() {
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "createDate");
+        List<Tour> tourList = tourRepository.findByTourQuery();
+
+        if (tourList.isEmpty()) {
+            Page<City> cityList = cityRepository.findAll(pageable);
+            return new ResponseDataMessage(HttpStatus.OK, "success",
+                    cityResponseMapper.cityResponseListDto(cityList.toList()));
         }
-        return new ResponseDataMessage(HttpStatus.OK, "success", cityResponseMapper.cityResponseDto(city));
+        return new ResponseDataMessage(HttpStatus.OK, "success",
+                cityResponseMapper.tourResponseListDto(tourList));
     }
 
     private void duplicateCityNameCheck(String cityName) {
