@@ -105,6 +105,7 @@ public class CityManagementService {
     @Transactional(rollbackFor = Exception.class)
     public ResponseDataMessage cityFindOneProcess(Long cityId) {
         City city = notFoundCityEntityCheck(cityId);
+        //마지막 조회한 경우 업데이트함
         city.lastClickDateModify();;
         List<Tour> tourList = tourRepository.findByCity(city);
         return new ResponseDataMessage(HttpStatus.OK, "success", cityResponseMapper.cityOrTourListResponseDto(city, tourList));
@@ -121,11 +122,13 @@ public class CityManagementService {
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "createDate");
         List<Tour> tourList = tourRepository.findByTourQuery();
 
+        //여행예정 or 여행중 도시가 있는경우 Tour 에서 조회
         if (tourList.isEmpty()) {
             Page<City> cityList = cityRepository.findAll(pageable);
             return new ResponseDataMessage(HttpStatus.OK, "success",
                     cityResponseMapper.cityResponseListDto(cityList.toList()));
         }
+        //위 상황 아닐경우 createDate 기준 Desc 하여 10개 호출
         return new ResponseDataMessage(HttpStatus.OK, "success",
                 cityResponseMapper.tourResponseListDto(tourList));
     }

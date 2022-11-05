@@ -32,7 +32,7 @@ public class TourQueryRepositoryImpl extends QuerydslRepositorySupport implement
                 .leftJoin(city)
                 .on(tour.city.cityId.eq(city.cityId))
                 .where(tour.endDate.after(LocalDate.now()))
-                .orderBy(roleRank.desc())
+                .orderBy(roleRank.asc())
                 .fetch();
 
     }

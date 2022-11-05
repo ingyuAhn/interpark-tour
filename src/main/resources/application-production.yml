@@ -1,6 +1,5 @@
 spring:
-  profiles:
-    active: prod
+  profiles: prod
 
   datasource:
     url: jdbc:mysql://localhost:13306/interpark?serverTimezone=UTC&characterEncoding=UTF-8
