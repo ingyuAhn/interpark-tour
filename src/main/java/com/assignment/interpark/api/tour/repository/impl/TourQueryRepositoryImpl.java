@@ -36,13 +36,14 @@ public class TourQueryRepositoryImpl extends QuerydslRepositorySupport implement
                 .select(Projections.fields(TourResponse.class,
                         tour.city.cityName,
                         tour.city.cityId,
-                        tour.startDate,
+                        tour.startDate.as("startDate"),
                         tour.endDate,
-                        tour.city.lastClickDate,
+                        tour.city.lastClickDate.as("lastClickDate"),
                         tour.city.createDate.as("cityCreateDate")))
                 .leftJoin(city)
                 .on(tour.city.cityId.eq(city.cityId))
                 .where(tour.endDate.after(LocalDate.now()))
+                .orderBy(startDate.asc(), cityCreateDate.asc(), lastClickDate.asc())
                 .fetch();
 
     }
