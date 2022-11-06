@@ -58,7 +58,7 @@ public class TourManagementService {
             localDateCompareTo(tourRequest.getStartDate(), tourRequest.getEndDate());
             City city = notFoundCityEntityCheck(tourRequest.getCityId());
             Tour tour = Tour.builder()
-                    .startData(tourRequest.getStartDate())
+                    .startDate(tourRequest.getStartDate())
                     .endDate(tourRequest.getEndDate())
                     .city(city)
                     .build();
@@ -82,7 +82,7 @@ public class TourManagementService {
         localDateCompareTo(tourRequest.getStartDate(), tourRequest.getEndDate());
         Tour tour = notFoundTourEntityCheck(tourId);
         City city = notFoundCityEntityCheck(tourRequest.getCityId());
-        tour.tourModify(city, tour.getStartData(), tour.getEndDate());
+        tour.tourModify(city, tour.getStartDate(), tour.getEndDate());
         return new ResponseMessage(HttpStatus.OK, "success");
     }
 

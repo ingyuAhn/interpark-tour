@@ -1,8 +1,13 @@
 package com.assignment.interpark.api.tour.repository.impl;
 
+import com.assignment.interpark.api.tour.dto.response.TourResponse;
 import com.assignment.interpark.api.tour.repository.TourQueryRepository;
 import com.assignment.interpark.domain.tour.Tour;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -20,19 +25,24 @@ public class TourQueryRepositoryImpl extends QuerydslRepositorySupport implement
     }
 
     @Override
-    public List<Tour> findByTourQuery() {
+    public List<TourResponse> findByTourQuery() {
 
-        NumberExpression<Integer> roleRank = new CaseBuilder()
-                .when(tour.startData.between(LocalDate.now(), LocalDate.now().plusDays(3) )).then(1)
-                .when(tour.city.createDate.between(LocalDateTime.now().minusDays(1), LocalDateTime.now() )).then(2)
-                .when(tour.city.lastClickDate.between(LocalDate.now().minusDays(7), LocalDate.now() )).then(3)
-                .otherwise(4);
+        DatePath startDate = Expressions.datePath(LocalDate.class, "startDate");
+        DatePath lastClickDate = Expressions.datePath(LocalDate.class, "lastClickDate");
+        DatePath cityCreateDate = Expressions.datePath(LocalDate.class, "cityCreateDate");
+
 
         return from(tour)
+                .select(Projections.fields(TourResponse.class,
+                        tour.city.cityName,
+                        tour.city.cityId,
+                        tour.startDate,
+                        tour.endDate,
+                        tour.city.lastClickDate,
+                        tour.city.createDate.as("cityCreateDate")))
                 .leftJoin(city)
                 .on(tour.city.cityId.eq(city.cityId))
                 .where(tour.endDate.after(LocalDate.now()))
-                .orderBy(roleRank.asc())
                 .fetch();
 
     }

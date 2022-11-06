@@ -3,6 +3,7 @@ package com.assignment.interpark.api.city.service;
 import com.assignment.interpark.api.city.dto.request.CityRequest;
 import com.assignment.interpark.api.city.mapper.CityResponseMapper;
 import com.assignment.interpark.api.city.repository.CityRepository;
+import com.assignment.interpark.api.tour.dto.response.TourResponse;
 import com.assignment.interpark.api.tour.repository.TourRepository;
 import com.assignment.interpark.common.message.ResponseDataMessage;
 import com.assignment.interpark.common.message.ResponseMessage;
@@ -120,7 +121,7 @@ public class CityManagementService {
     public ResponseDataMessage cityFindListProcess() {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "createDate");
-        List<Tour> tourList = tourRepository.findByTourQuery();
+        List<TourResponse> tourList = tourRepository.findByTourQuery();
 
         //여행예정 or 여행중 도시가 있는경우 Tour 에서 조회
         if (tourList.isEmpty()) {
@@ -130,7 +131,7 @@ public class CityManagementService {
         }
         //위 상황 아닐경우 createDate 기준 Desc 하여 10개 호출
         return new ResponseDataMessage(HttpStatus.OK, "success",
-                cityResponseMapper.tourResponseListDto(tourList));
+                tourList);
     }
 
     private void duplicateCityNameCheck(String cityName) {

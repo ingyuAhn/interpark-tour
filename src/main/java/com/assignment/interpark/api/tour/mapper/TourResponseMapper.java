@@ -1,7 +1,6 @@
 package com.assignment.interpark.api.tour.mapper;
 
 import com.assignment.interpark.api.tour.dto.response.TourResponse;
-import com.assignment.interpark.domain.tour.City;
 import com.assignment.interpark.domain.tour.Tour;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

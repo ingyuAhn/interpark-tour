@@ -24,21 +24,21 @@ public class Tour {
     private City city;
 
     @Column(nullable = false)
-    private LocalDate startData;
+    private LocalDate startDate;
 
     @Column(nullable = false)
     private LocalDate endDate;
 
     @Builder
-    public Tour(City city, LocalDate startData, LocalDate endDate) {
+    public Tour(City city, LocalDate startDate, LocalDate endDate) {
         this.city = city;
-        this.startData = startData;
+        this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public void tourModify(City city, LocalDate startData, LocalDate endDate) {
+    public void tourModify(City city, LocalDate startDate, LocalDate endDate) {
         this.city = city;
-        this.startData = startData;
+        this.startDate = startDate;
         this.endDate = endDate;
     }
 }

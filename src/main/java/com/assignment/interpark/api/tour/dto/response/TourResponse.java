@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @Setter
 public class TourResponse {
 
-    private LocalDate startData;
+    private LocalDate startDate;
 
     private LocalDate endDate;
 
@@ -20,8 +21,13 @@ public class TourResponse {
 
     private Long cityId;
 
-    public TourResponse(LocalDate startData, LocalDate endDate, String cityName, Long cityId) {
-        this.startData = startData;
+    private LocalDateTime cityCreateDate;
+
+    private LocalDate lastClickDate;
+
+
+    public TourResponse(LocalDate startDate, LocalDate endDate, String cityName, Long cityId) {
+        this.startDate = startDate;
         this.endDate = endDate;
         this.cityName = cityName;
         this.cityId = cityId;
